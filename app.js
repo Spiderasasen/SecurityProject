@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 
 import {getSessionOptions} from './services/sessionService.js';
 import {getBasicAuthConfig} from './services/basicAuthService.js';
-import {returnPublicPage,returnPrivatePage} from './controllers/simpleHTMLController.js';
+import {returnPublicPage,returnPrivatePage, checkAccessIntercept} from './controllers/simpleHTMLController.js';
 
 
 const app = express();
@@ -15,7 +15,8 @@ const port = 9004;
 
 app.use(session(getSessionOptions()));
 console.log(getBasicAuthConfig());
-app.use('/private',basicAuth(getBasicAuthConfig()));
+// app.use('/private',basicAuth(getBasicAuthConfig()));
+app.use("/private", checkAccessIntercept);
 
 app.get('/',returnPublicPage);
 app.get('/private',returnPrivatePage);
